@@ -4,128 +4,126 @@ An end-to-end **autonomous invoice reconciliation system** that extracts, valida
 
 This project simulates a **real-world finance automation pipeline** used in enterprise procurement, accounting, and ERP systems.
 
+# 📄 Written Analysis
+
+## Overview
+
+This project implements an **agent-based invoice reconciliation system** designed to automatically extract, validate, and reconcile supplier invoices against existing purchase orders. The system simulates a realistic enterprise finance workflow, where invoices may arrive in varying formats, contain discrepancies, or lack clear references to purchase orders.
+
+The solution focuses on **robustness, explainability, and deterministic decision-making**, rather than relying solely on black-box LLM behavior.
+
 ---
 
-📄 Written Analysis
-Overview
+## System Architecture
 
-This project implements an agent-based invoice reconciliation system designed to automatically extract, validate, and reconcile supplier invoices against existing purchase orders. The system simulates a realistic enterprise finance workflow, where invoices may arrive in varying formats, contain discrepancies, or lack clear references to purchase orders.
+The system is built using a **multi-agent architecture** orchestrated via **LangGraph**, where each agent is responsible for a clearly defined task:
 
-The solution focuses on robustness, explainability, and deterministic decision-making, rather than relying solely on black-box LLM behavior.
+1. **Document Agent**
+   Extracts structured invoice data from PDF documents using deterministic parsing, with optional OCR and LLM fallback for unstructured layouts.
 
-System Architecture
+2. **Matching Agent**
+   Attempts to match the extracted invoice against known purchase orders using:
 
-The system is built using a multi-agent architecture orchestrated via LangGraph, where each agent is responsible for a clearly defined task:
+   * Exact total matching
+   * Line-item comparison
+   * Fuzzy string similarity for reordered or slightly altered descriptions
 
-Document Agent
-Extracts structured invoice data from PDF documents using deterministic parsing, with optional OCR and LLM fallback for unstructured layouts.
+3. **Discrepancy Agent**
+   Identifies mismatches such as:
 
-Matching Agent
-Attempts to match the extracted invoice against known purchase orders using:
+   * Missing purchase orders
+   * Price variances
+   * Quantity inconsistencies
+   * Total amount deviations
 
-Exact total matching
-
-Line-item comparison
-
-Fuzzy string similarity for reordered or slightly altered descriptions
-
-Discrepancy Agent
-Identifies mismatches such as:
-
-Missing purchase orders
-
-Price variances
-
-Quantity inconsistencies
-
-Total amount deviations
-
-Resolution Agent
-Assigns a final recommendation (auto_approve or flag_for_review) based on confidence thresholds and detected discrepancies.
+4. **Resolution Agent**
+   Assigns a final recommendation (`auto_approve` or `flag_for_review`) based on confidence thresholds and detected discrepancies.
 
 This modular design allows each agent to evolve independently and mirrors how production-grade decision pipelines are typically structured.
 
-Data Handling & Extraction Strategy
+---
 
-Invoice PDFs are processed using deterministic PDF text extraction wherever possible. This ensures predictable behavior and avoids unnecessary dependency on external services.
+## Data Handling & Extraction Strategy
+
+Invoice PDFs are processed using **deterministic PDF text extraction** wherever possible. This ensures predictable behavior and avoids unnecessary dependency on external services.
 
 For cases involving scanned or poorly structured documents, the system supports:
 
-OCR-based extraction (optional)
+* OCR-based extraction (optional)
+* LLM-assisted fallback for line-item recovery
 
-LLM-assisted fallback for line-item recovery
+If all extraction methods fail, the system still produces a valid output with reduced confidence, ensuring **graceful degradation rather than system failure**.
 
-If all extraction methods fail, the system still produces a valid output with reduced confidence, ensuring graceful degradation rather than system failure.
+---
 
-Purchase Order Matching Logic
+## Purchase Order Matching Logic
 
 Purchase orders are loaded from structured JSON files and indexed in memory for fast access.
 
 Matching is performed using a multi-stage strategy:
 
-Exact total match (highest confidence)
-
-Line-item aggregation match
-
-Fuzzy description similarity (to handle reordered or reformatted items)
+1. **Exact total match** (highest confidence)
+2. **Line-item aggregation match**
+3. **Fuzzy description similarity** (to handle reordered or reformatted items)
 
 Each successful match is assigned a confidence score, which directly influences the final resolution decision.
 
-Discrepancy Detection & Confidence Scoring
+---
+
+## Discrepancy Detection & Confidence Scoring
 
 The system explicitly tracks discrepancies rather than hiding them. Each discrepancy includes:
 
-Type
-
-Severity
-
-Supporting numerical evidence
+* Type
+* Severity
+* Supporting numerical evidence
 
 A confidence score is computed based on:
 
-Extraction reliability
+* Extraction reliability
+* Matching accuracy
+* Presence or absence of discrepancies
 
-Matching accuracy
+This makes every automated decision **auditable and explainable**, a critical requirement in financial systems.
 
-Presence or absence of discrepancies
+---
 
-This makes every automated decision auditable and explainable, a critical requirement in financial systems.
-
-Decision Making & Explainability
+## Decision Making & Explainability
 
 Final decisions are derived from confidence thresholds:
 
-High confidence + no discrepancies → auto_approve
-
-Low confidence or unresolved issues → flag_for_review
+* High confidence + no discrepancies → `auto_approve`
+* Low confidence or unresolved issues → `flag_for_review`
 
 Each output includes:
 
-A clear recommendation
+* A clear recommendation
+* A structured breakdown of discrepancies (if any)
+* A human-readable reasoning summary
 
-A structured breakdown of discrepancies (if any)
+This ensures that downstream users understand *why* a decision was made, not just *what* decision was made.
 
-A human-readable reasoning summary
+---
 
-This ensures that downstream users understand why a decision was made, not just what decision was made.
-
-Design Philosophy
+## Design Philosophy
 
 The system prioritizes:
 
-Determinism over blind automation
+* Determinism over blind automation
+* Transparency over complexity
+* Graceful failure over brittle pipelines
 
-Transparency over complexity
+Rather than forcing LLM usage everywhere, the architecture uses AI **only where it adds value**, making the system practical, reliable, and production-aligned.
 
-Graceful failure over brittle pipelines
+---
 
-Rather than forcing LLM usage everywhere, the architecture uses AI only where it adds value, making the system practical, reliable, and production-aligned.
-
-Conclusion
+## Conclusion
 
 This project demonstrates how agent-based architectures can be applied to real-world financial reconciliation problems. By combining deterministic logic, fuzzy matching, and optional AI assistance, the system achieves a balance between automation and reliability.
 
 The result is a scalable, explainable, and extensible invoice reconciliation pipeline suitable for enterprise environments.
+
+---
 
 ## 🚀 Overview
 
