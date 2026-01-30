@@ -1,0 +1,30 @@
+langgraph
+langchain
+pydantic
+python-Levenshtein
+rapidfuzz
+pdfplumber
+pytesseract
+pillow
+opencv-python
+numpy
+
+# Core
+python-dotenv>=1.0.1
+pydantic>=2.6.0
+
+# PDF Processing
+pdfplumber>=0.11.0
+pdf2image>=1.17.0
+pillow>=10.0.0
+
+# OCR (optional – works only if poppler is installed)
+pytesseract>=0.3.10
+
+# LLM + Agents
+groq>=0.9.0
+langgraph>=0.0.40
+langchain-core>=0.2.0
+
+# Utilities
+rapidfuzz>=3.6.1
