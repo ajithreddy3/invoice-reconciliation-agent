@@ -6,6 +6,127 @@ This project simulates a **real-world finance automation pipeline** used in ente
 
 ---
 
+📄 Written Analysis
+Overview
+
+This project implements an agent-based invoice reconciliation system designed to automatically extract, validate, and reconcile supplier invoices against existing purchase orders. The system simulates a realistic enterprise finance workflow, where invoices may arrive in varying formats, contain discrepancies, or lack clear references to purchase orders.
+
+The solution focuses on robustness, explainability, and deterministic decision-making, rather than relying solely on black-box LLM behavior.
+
+System Architecture
+
+The system is built using a multi-agent architecture orchestrated via LangGraph, where each agent is responsible for a clearly defined task:
+
+Document Agent
+Extracts structured invoice data from PDF documents using deterministic parsing, with optional OCR and LLM fallback for unstructured layouts.
+
+Matching Agent
+Attempts to match the extracted invoice against known purchase orders using:
+
+Exact total matching
+
+Line-item comparison
+
+Fuzzy string similarity for reordered or slightly altered descriptions
+
+Discrepancy Agent
+Identifies mismatches such as:
+
+Missing purchase orders
+
+Price variances
+
+Quantity inconsistencies
+
+Total amount deviations
+
+Resolution Agent
+Assigns a final recommendation (auto_approve or flag_for_review) based on confidence thresholds and detected discrepancies.
+
+This modular design allows each agent to evolve independently and mirrors how production-grade decision pipelines are typically structured.
+
+Data Handling & Extraction Strategy
+
+Invoice PDFs are processed using deterministic PDF text extraction wherever possible. This ensures predictable behavior and avoids unnecessary dependency on external services.
+
+For cases involving scanned or poorly structured documents, the system supports:
+
+OCR-based extraction (optional)
+
+LLM-assisted fallback for line-item recovery
+
+If all extraction methods fail, the system still produces a valid output with reduced confidence, ensuring graceful degradation rather than system failure.
+
+Purchase Order Matching Logic
+
+Purchase orders are loaded from structured JSON files and indexed in memory for fast access.
+
+Matching is performed using a multi-stage strategy:
+
+Exact total match (highest confidence)
+
+Line-item aggregation match
+
+Fuzzy description similarity (to handle reordered or reformatted items)
+
+Each successful match is assigned a confidence score, which directly influences the final resolution decision.
+
+Discrepancy Detection & Confidence Scoring
+
+The system explicitly tracks discrepancies rather than hiding them. Each discrepancy includes:
+
+Type
+
+Severity
+
+Supporting numerical evidence
+
+A confidence score is computed based on:
+
+Extraction reliability
+
+Matching accuracy
+
+Presence or absence of discrepancies
+
+This makes every automated decision auditable and explainable, a critical requirement in financial systems.
+
+Decision Making & Explainability
+
+Final decisions are derived from confidence thresholds:
+
+High confidence + no discrepancies → auto_approve
+
+Low confidence or unresolved issues → flag_for_review
+
+Each output includes:
+
+A clear recommendation
+
+A structured breakdown of discrepancies (if any)
+
+A human-readable reasoning summary
+
+This ensures that downstream users understand why a decision was made, not just what decision was made.
+
+Design Philosophy
+
+The system prioritizes:
+
+Determinism over blind automation
+
+Transparency over complexity
+
+Graceful failure over brittle pipelines
+
+Rather than forcing LLM usage everywhere, the architecture uses AI only where it adds value, making the system practical, reliable, and production-aligned.
+
+Conclusion
+
+This project demonstrates how agent-based architectures can be applied to real-world financial reconciliation problems. By combining deterministic logic, fuzzy matching, and optional AI assistance, the system achieves a balance between automation and reliability.
+
+The result is a scalable, explainable, and extensible invoice reconciliation pipeline suitable for enterprise environments.
+
 ## 🚀 Overview
 
 Invoice reconciliation is a critical but error-prone business process. Invoices often arrive in different formats (PDFs, scans, inconsistent layouts) and must be validated against purchase orders before payment approval.
