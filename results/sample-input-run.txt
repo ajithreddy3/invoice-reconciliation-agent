@@ -1,0 +1,96 @@
+﻿
+=== Processing Invoice_1_Baseline.pdf ===
+
+{
+  "filename": "data\\invoices\\Invoice_1_Baseline.pdf",
+  "extracted_invoice": {
+    "invoice_number": "INV-2024-1001",
+    "invoice_date": "15 January 2024",
+    "supplier": "PharmaChem Supplies Ltd",
+    "po_reference": "PO-2024-001",
+    "currency": "GBP",
+    "line_items": [
+      {
+        "description": "Paracetamol BP 500mg",
+        "quantity": 50.0,
+        "unit": "kg",
+        "unit_price": 125.0,
+        "line_total": 6250.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Microcrystalline Cellulose",
+        "quantity": 100.0,
+        "unit": "kg",
+        "unit_price": 8.5,
+        "line_total": 850.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Magnesium Stearate Ph Eur",
+        "quantity": 25.0,
+        "unit": "kg",
+        "unit_price": 24.0,
+        "line_total": 600.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Titanium Dioxide E171",
+        "quantity": 15.0,
+        "unit": "kg",
+        "unit_price": 18.5,
+        "line_total": 277.5,
+        "extraction_confidence": 0.9
+      }
+    ],
+    "subtotal": 7977.5,
+    "vat": 1595.5,
+    "total": 9573.0
+  },
+  "matched_po": {
+    "po_number": "PO-2024-001",
+    "supplier": "PharmaChem Supplies Ltd",
+    "date": "2024-01-10",
+    "total": 9573.0,
+    "currency": "GBP",
+    "line_items": [
+      {
+        "item_id": "API-001",
+        "description": "Paracetamol BP 500mg",
+        "quantity": 50,
+        "unit": "kg",
+        "unit_price": 125.0,
+        "line_total": 6250.0
+      },
+      {
+        "item_id": "EXC-023",
+        "description": "Microcrystalline Cellulose",
+        "quantity": 100,
+        "unit": "kg",
+        "unit_price": 8.5,
+        "line_total": 850.0
+      },
+      {
+        "item_id": "EXC-045",
+        "description": "Magnesium Stearate Ph Eur",
+        "quantity": 25,
+        "unit": "kg",
+        "unit_price": 24.0,
+        "line_total": 600.0
+      },
+      {
+        "item_id": "COL-012",
+        "description": "Titanium Dioxide E171",
+        "quantity": 15,
+        "unit": "kg",
+        "unit_price": 18.5,
+        "line_total": 277.5
+      }
+    ]
+  },
+  "discrepancies": [],
+  "extraction_confidence": 0.9,
+  "po_match_confidence": 1.0,
+  "recommended_action": "auto_approve",
+  "agent_reasoning": "Parsed invoice fields and line items from PDF contents | PO matched; validation passed"
+}

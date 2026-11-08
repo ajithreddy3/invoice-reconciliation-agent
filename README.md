@@ -24,6 +24,42 @@ python -m venv .venv
 
 On macOS/Linux, use `.venv/bin/python` instead. This is a batch CLI that prints JSON and exits; there is no web server. No API key or LLM service is required.
 
+## Sample input and observed output
+
+Run the bundled [baseline invoice](data/invoices/Invoice_1_Baseline.pdf) against `data/purchase_orders.json`:
+
+```powershell
+.\.venv\Scripts\python.exe -m app.main data/invoices/Invoice_1_Baseline.pdf
+```
+
+Confirmed locally on November 9, 2026: the command completed successfully (exit code 0), extracted four line items, and matched `PO-2024-001` with no discrepancies.
+
+| Extracted field | Observed value |
+| --- | --- |
+| Invoice number | INV-2024-1001 |
+| Supplier | PharmaChem Supplies Ltd |
+| Invoice date | 15 January 2024 |
+| Currency | GBP |
+| Subtotal | 7,977.50 |
+| VAT | 1,595.50 |
+| Total | 9,573.00 |
+| Matched PO | PO-2024-001 |
+| Recommendation | auto_approve |
+
+Selected fields from the actual JSON output:
+
+```json
+{
+  "discrepancies": [],
+  "extraction_confidence": 0.9,
+  "po_match_confidence": 1.0,
+  "recommended_action": "auto_approve",
+  "agent_reasoning": "Parsed invoice fields and line items from PDF contents | PO matched; validation passed"
+}
+```
+
+The complete output, including extracted line items and the matched purchase order, is saved in [results/sample-input-run.txt](results/sample-input-run.txt). This confirms the baseline sample; supported-layout limitations still apply to other invoices.
+
 ## Extraction and validation
 
 - PDFium repairs PDF structure before pdfplumber extracts page text. This also handles the malformed bundled price-trap PDF.
@@ -71,6 +107,14 @@ Tests cover bundled text layouts and PDF repair, renamed PDFs, an independently 
 - `results/`: current and historical run evidence.
 
 Legacy `utils/ocr.py` and `utils/llm.py` are not used by the active pipeline.
+
+## Author
+
+**Ajith Reddy**
+
+Git author email: `ajithparne@gmail.com`
+
+Responsible for this version's content-based PDF extraction, reconciliation validation, CLI improvements, regression tests, sample execution, and documentation, with Codex assistance.
 
 ## Provenance and contributions
 
