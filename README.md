@@ -1,358 +1,79 @@
-# 🧾 Invoice Reconciliation Agent
+# Invoice Reconciliation Agent
 
-An end-to-end **autonomous invoice reconciliation system** that extracts, validates, matches, and reconciles supplier invoices against purchase orders using deterministic rules with intelligent fallbacks.
+A Python command-line demonstration of a four-stage LangGraph workflow:
 
-This project simulates a **real-world finance automation pipeline** used in enterprise procurement, accounting, and ERP systems.
-
-# 📄 Written Analysis
-
-## Overview
-
-This project implements an **agent-based invoice reconciliation system** designed to automatically extract, validate, and reconcile supplier invoices against existing purchase orders. The system simulates a realistic enterprise finance workflow, where invoices may arrive in varying formats, contain discrepancies, or lack clear references to purchase orders.
-
-The solution focuses on **robustness, explainability, and deterministic decision-making**, rather than relying solely on black-box LLM behavior.
-
----
-
-## System Architecture
-
-The system is built using a **multi-agent architecture** orchestrated via **LangGraph**, where each agent is responsible for a clearly defined task:
-
-1. **Document Agent**
-   Extracts structured invoice data from PDF documents using deterministic parsing, with optional OCR and LLM fallback for unstructured layouts.
-
-2. **Matching Agent**
-   Attempts to match the extracted invoice against known purchase orders using:
-
-   * Exact total matching
-   * Line-item comparison
-   * Fuzzy string similarity for reordered or slightly altered descriptions
-
-3. **Discrepancy Agent**
-   Identifies mismatches such as:
-
-   * Missing purchase orders
-   * Price variances
-   * Quantity inconsistencies
-   * Total amount deviations
-
-4. **Resolution Agent**
-   Assigns a final recommendation (`auto_approve` or `flag_for_review`) based on confidence thresholds and detected discrepancies.
-
-This modular design allows each agent to evolve independently and mirrors how production-grade decision pipelines are typically structured.
-
----
-
-## Data Handling & Extraction Strategy
-
-Invoice PDFs are processed using **deterministic PDF text extraction** wherever possible. This ensures predictable behavior and avoids unnecessary dependency on external services.
-
-For cases involving scanned or poorly structured documents, the system supports:
-
-* OCR-based extraction (optional)
-* LLM-assisted fallback for line-item recovery
-
-If all extraction methods fail, the system still produces a valid output with reduced confidence, ensuring **graceful degradation rather than system failure**.
-
----
-
-## Purchase Order Matching Logic
-
-Purchase orders are loaded from structured JSON files and indexed in memory for fast access.
-
-Matching is performed using a multi-stage strategy:
-
-1. **Exact total match** (highest confidence)
-2. **Line-item aggregation match**
-3. **Fuzzy description similarity** (to handle reordered or reformatted items)
-
-Each successful match is assigned a confidence score, which directly influences the final resolution decision.
-
----
-
-## Discrepancy Detection & Confidence Scoring
-
-The system explicitly tracks discrepancies rather than hiding them. Each discrepancy includes:
-
-* Type
-* Severity
-* Supporting numerical evidence
-
-A confidence score is computed based on:
-
-* Extraction reliability
-* Matching accuracy
-* Presence or absence of discrepancies
-
-This makes every automated decision **auditable and explainable**, a critical requirement in financial systems.
-
----
-
-## Decision Making & Explainability
-
-Final decisions are derived from confidence thresholds:
-
-* High confidence + no discrepancies → `auto_approve`
-* Low confidence or unresolved issues → `flag_for_review`
-
-Each output includes:
-
-* A clear recommendation
-* A structured breakdown of discrepancies (if any)
-* A human-readable reasoning summary
-
-This ensures that downstream users understand *why* a decision was made, not just *what* decision was made.
-
----
-
-## Design Philosophy
-
-The system prioritizes:
-
-* Determinism over blind automation
-* Transparency over complexity
-* Graceful failure over brittle pipelines
-
-Rather than forcing LLM usage everywhere, the architecture uses AI **only where it adds value**, making the system practical, reliable, and production-aligned.
-
----
-
-## Conclusion
-
-This project demonstrates how agent-based architectures can be applied to real-world financial reconciliation problems. By combining deterministic logic, fuzzy matching, and optional AI assistance, the system achieves a balance between automation and reliability.
-
-The result is a scalable, explainable, and extensible invoice reconciliation pipeline suitable for enterprise environments.
-
----
-
-## 🚀 Overview
-
-Invoice reconciliation is a critical but error-prone business process. Invoices often arrive in different formats (PDFs, scans, inconsistent layouts) and must be validated against purchase orders before payment approval.
-
-This system automates that workflow by:
-
-* Extracting structured data from invoices
-* Matching invoices to purchase orders
-* Detecting discrepancies (price, totals, missing POs)
-* Producing clear, explainable reconciliation decisions
-
-The result is a **fully automated, explainable, and extensible reconciliation engine**.
-
----
-
-## ✨ Key Features
-
-### 📄 Invoice Processing
-
-* Supports **multiple invoice formats**
-* Handles clean PDFs and scanned documents
-* Line-item level extraction
-* Deterministic parsing with intelligent fallback logic
-
-### 🔍 Purchase Order Matching
-
-* Matches invoices to POs using:
-
-  * Total amount comparison
-  * Line-item alignment
-  * Supplier and currency validation
-* Robust handling of missing or ambiguous PO references
-
-### ⚠️ Discrepancy Detection
-
-* Identifies:
-
-  * Missing purchase orders
-  * Price mismatches
-  * Total mismatches
-* Produces structured discrepancy reports with severity levels
-
-### 🤖 Agent-Based Architecture
-
-* Modular agent pipeline
-* Each agent has a **single responsibility**
-* Easily extensible for OCR, embeddings, or LLM upgrades
-
-### 🧠 Explainable Decisions
-
-* Every reconciliation includes:
-
-  * Confidence scores
-  * Explicit reasoning
-  * Clear approval / review recommendations
-
----
-
-## 🏗️ Architecture
-
-```
-Invoice PDF
-   ↓
-Document Agent
-   ↓
-Matching Agent
-   ↓
-Discrepancy Agent
-   ↓
-Resolution Agent
-   ↓
-Final Reconciliation Decision
+```text
+Document -> Matching -> Discrepancy -> Resolution
 ```
 
-Each stage is isolated, testable, and independently improvable.
+The current implementation uses predefined invoice records keyed by the five bundled PDF filenames. It demonstrates reconciliation control flow; it does not yet extract invoice values from arbitrary PDF contents.
 
----
+## Run locally
 
-## 📁 Project Structure
+Validated with Python 3.10.11 on Windows. From the repository root in PowerShell:
 
-```
-invoice-reconciliation-agent/
-│
-├── agents/
-│   ├── document_agent.py        # Invoice extraction
-│   ├── matching_agent.py        # PO matching logic
-│   ├── discrepancy_agent.py     # Discrepancy detection
-│   └── resolution_agent.py      # Final decision logic
-│
-├── app/
-│   ├── graph.py                 # Agent workflow graph
-│   └── main.py                  # Entry point
-│
-├── utils/
-│   ├── pdf.py                   # PDF text extraction
-│   ├── ocr.py                   # OCR utilities (optional)
-│   ├── llm.py                   # Intelligent fallback logic
-│   ├── fuzzy.py                 # Fuzzy matching helpers
-│   ├── confidence.py            # Confidence scoring
-│   ├── po_loader.py             # Purchase order loading
-│   └── schemas.py               # Pydantic data models
-│
-├── data/
-│   ├── invoices/                # Sample invoice PDFs
-│   └── purchase_orders.json     # Purchase order dataset
-│
-├── requirements.txt
-└── README.md
-```
-
----
-
-## ⚙️ Installation
-
-### 1️⃣ Clone the repository
-
-```bash
-git clone https://github.com/RitvikSharmaa/invoice-reconciliation-agent.git
-cd invoice-reconciliation-agent
-```
-
-### 2️⃣ Create a virtual environment
-
-```bash
+```powershell
 python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m app.main
 ```
 
-Activate it:
+For macOS/Linux, use `.venv/bin/python` in place of `.\.venv\Scripts\python.exe`.
 
-**Windows**
+This is a batch CLI, with no web server or browser interface. It exits after printing JSON results for all five bundled invoices. The active demo pipeline requires no API key or external service.
+
+## Local validation results
+
+Validation date: November 9, 2026. Source revision: `5f3f622a684fe177a52ee109a5448b64ea7aa78f`.
+
+The full console output is recorded in [results/local-run.txt](results/local-run.txt), and [results/requirements-local.txt](results/requirements-local.txt) records the installed dependency versions.
+
+| Sample | Matched PO | Recommendation | Discrepancies |
+| --- | --- | --- | --- |
+| Invoice_1_Baseline.pdf | PO-2024-001 | auto_approve | None |
+| Invoice_2_Scanned.pdf | None | flag_for_review | no_matching_po |
+| Invoice_3_Different_Format.pdf | PO-2024-003 | auto_approve | None |
+| Invoice_4_Price_Trap.pdf | PO-2024-004 | auto_approve | None |
+| Invoice_5_Missing_PO.pdf | PO-2024-005 | auto_approve | None |
+
+These are observed demo decisions, not evidence that the financial decisions are correct or that PDF extraction works.
+
+## Behavior and limitations
+
+- `utils/pdf.py` returns a fixed placeholder string. `agents/document_agent.py` ignores that text and selects hardcoded line items and totals by filename. Unknown filenames are unsupported.
+- The scanned sample has no line items and a zero total. It is flagged because no PO matches; OCR is not invoked by the active workflow.
+- PO matching uses equal totals first, then case-insensitive description substring overlap. The active matcher does not validate supplier, currency, or explicit PO references, and does not use the fuzzy helper.
+- The price-trap sample matches by line items. Its total of GBP 13,476 differs from the PO total of GBP 13,176 by about 2.28%, below the discrepancy agent's 5% threshold. The demo consequently approves it despite the hardcoded ibuprofen unit price differing from the PO.
+- The missing-reference sample is approved because its total equals PO-2024-005. A missing reference alone is not flagged.
+- Extraction confidence is always set to 0.95, including for the empty scanned sample. Resolution checks only whether discrepancies exist; it does not enforce confidence thresholds.
+- `utils/llm.py` is a stub returning an empty list. No LLM extraction was exercised.
+- The separate OCR helper expects Poppler and Tesseract, with a hardcoded Windows Tesseract path. OCR was not validated in this run.
+
+Before real invoice processing, implement actual extraction, line-item price/quantity checks, supplier/currency validation, confidence-based review, and regression tests with independently verified expected decisions.
+
+## Project layout
+
+- `app/main.py`: batch CLI and JSON serialization.
+- `app/graph.py`: four-stage LangGraph workflow.
+- `agents/`: document, matching, discrepancy, and resolution stages.
+- `utils/`: schemas, PO loaders, and extraction/matching helpers.
+- `data/invoices/`: five bundled sample PDFs.
+- `data/purchase_orders.json`: purchase orders used by the active matcher.
+- `results/`: captured local output and installed dependency versions.
+
+## Provenance and contributions
+
+Original project: [RitvikSharmaa/invoice-reconciliation-agent](https://github.com/RitvikSharmaa/invoice-reconciliation-agent), by Ritvik Sharma (GitHub: [RitvikSharmaa](https://github.com/RitvikSharmaa)). The imported history contains six original commits, recorded under Ritvik Sharma and RitvikSharmaa.
+
+Local validation and documentation contribution: Ajith Reddy, using the existing local Git author configuration, with Codex assistance. This contribution records the local run, dependency versions, and implementation limitations. At the repository owner's request, this branch records all commit author and committer identities as Ajith Reddy. This is an attribution rewrite, not a claim that Ajith wrote the upstream implementation. The original commit identities remain available locally on `backup/original-authorship`.
+
+Inspect contribution history with:
 
 ```bash
-.venv\Scripts\activate
+git log --format="%h %an <%ae> %s"
+git shortlog -sne HEAD
 ```
 
-**macOS / Linux**
+## License status
 
-```bash
-source .venv/bin/activate
-```
-
-### 3️⃣ Install dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## ▶️ Running the Project
-
-```bash
-python -m app.main
-```
-
-The system will process all invoices in `data/invoices/` and print structured reconciliation results to the console.
-
----
-
-## 📊 Example Output (Simplified)
-
-```json
-{
-  "filename": "Invoice_1_Baseline.pdf",
-  "matched_po": "PO-2024-001",
-  "discrepancies": [],
-  "recommended_action": "auto_approve",
-  "confidence": 0.95,
-  "reasoning": "Invoice matched PO by total and line items"
-}
-```
-
-Each result includes:
-
-* Extracted invoice data
-* Matched purchase order (if any)
-* Discrepancy list
-* Confidence scores
-* Final recommendation
-
----
-
-## 🧪 Test Coverage (Scenario-Based)
-
-The provided sample invoices intentionally cover:
-
-| Scenario                    | Status          |
-| --------------------------- | --------------- |
-| Clean invoice + matching PO | ✅ Auto-approved |
-| Scanned invoice             | ⚠️ Flagged      |
-| Different invoice layout    | ✅ Auto-approved |
-| Price discrepancy           | ⚠️ Flagged      |
-| Missing PO reference        | ⚠️ Flagged      |
-
-This ensures realistic, production-style behavior.
-
----
-
-## 🧠 Design Philosophy
-
-* **Deterministic first**: predictable, auditable logic
-* **Fallback-driven**: resilience to missing or messy data
-* **Explainability over black-box AI**
-* **Production-ready structure**, not demo scripts
-
-This system is designed to mirror how **real finance automation platforms** are built.
-
----
-
-## 🔮 Future Improvements
-
-* OCR integration with Tesseract or cloud vision APIs
-* Vector-based line item matching
-* Multi-currency reconciliation
-* ERP / SAP integration
-* Async batch processing
-* Web dashboard for review queues
-
----
-
-## 👤 Author
-
-**Ritvik Sharma**
-AI / ML Engineer
-GitHub: [https://github.com/RitvikSharmaa](https://github.com/RitvikSharmaa)
-
----
-
-## 📜 License
-
-This project is open-source and available under the MIT License.
+The upstream README claimed MIT licensing, but the checked-out source revision contains no LICENSE file. Obtain clarification from the original author before redistributing under an assumed MIT grant.
