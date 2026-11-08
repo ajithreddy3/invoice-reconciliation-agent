@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Optional
 
 class LineItem(BaseModel):
@@ -32,7 +32,7 @@ class AgentState(BaseModel):
     filename: str
     extracted_invoice: Optional[ExtractedInvoice] = None
     matched_po: Optional[dict] = None
-    discrepancies: List[Discrepancy] = []
+    discrepancies: List[Discrepancy] = Field(default_factory=list)
     extraction_confidence: float = 0.0
     po_match_confidence: float = 0.0
     recommended_action: Optional[str] = None

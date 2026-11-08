@@ -1,13 +1,12 @@
+﻿import argparse
 import json
+from pathlib import Path
 from app.graph import app
 from utils.schemas import AgentState
 
+
 def serialize(obj):
-    """
-    Recursively serialize Pydantic models into dicts
-    so json.dumps never crashes.
-    """
-    if hasattr(obj, "model_dump"):
+    if hasattr(obj, 'model_dump'):
         return obj.model_dump()
     if isinstance(obj, dict):
         return {k: serialize(v) for k, v in obj.items()}
@@ -17,23 +16,24 @@ def serialize(obj):
 
 
 def main():
-    invoices = [
-        "data/invoices/Invoice_1_Baseline.pdf",
-        "data/invoices/Invoice_2_Scanned.pdf",
-        "data/invoices/Invoice_3_Different_Format.pdf",
-        "data/invoices/Invoice_4_Price_Trap.pdf",
-        "data/invoices/Invoice_5_Missing_PO.pdf",
-    ]
+    parser = argparse.ArgumentParser(description='Reconcile invoice PDFs against local purchase orders')
+    parser.add_argument('invoices', nargs='*', help='PDF files or directories; defaults to bundled samples')
+    args = parser.parse_args()
+    paths = args.invoices or [str(Path(__file__).resolve().parents[1] / 'data' / 'invoices')]
+    invoices = []
+    for value in paths:
+        path = Path(value)
+        if path.is_dir():
+            invoices.extend(sorted(file for file in path.iterdir() if file.suffix.lower() == '.pdf'))
+        else:
+            invoices.append(path)
+    if not invoices:
+        parser.error('No PDF files found')
+    for path in invoices:
+        print(f'\n=== Processing {path.name} ===\n')
+        result = app.invoke(AgentState(filename=str(path)))
+        print(json.dumps(serialize(result), indent=2))
 
-    for invoice_path in invoices:
-        print(f"\n=== Processing {invoice_path} ===\n")
 
-        state = AgentState(filename=invoice_path)
-        result = app.invoke(state)
-
-        safe_result = serialize(result)
-        print(json.dumps(safe_result, indent=2))
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()

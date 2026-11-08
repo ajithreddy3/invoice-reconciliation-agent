@@ -1,0 +1,422 @@
+﻿
+=== Processing Invoice_1_Baseline.pdf ===
+
+{
+  "filename": "C:\\Users\\rohit reddy\\Downloads\\New folder\\invoice-reconciliation-agent\\data\\invoices\\Invoice_1_Baseline.pdf",
+  "extracted_invoice": {
+    "invoice_number": "INV-2024-1001",
+    "invoice_date": "15 January 2024",
+    "supplier": "PharmaChem Supplies Ltd",
+    "po_reference": "PO-2024-001",
+    "currency": "GBP",
+    "line_items": [
+      {
+        "description": "Paracetamol BP 500mg",
+        "quantity": 50.0,
+        "unit": "kg",
+        "unit_price": 125.0,
+        "line_total": 6250.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Microcrystalline Cellulose",
+        "quantity": 100.0,
+        "unit": "kg",
+        "unit_price": 8.5,
+        "line_total": 850.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Magnesium Stearate Ph Eur",
+        "quantity": 25.0,
+        "unit": "kg",
+        "unit_price": 24.0,
+        "line_total": 600.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Titanium Dioxide E171",
+        "quantity": 15.0,
+        "unit": "kg",
+        "unit_price": 18.5,
+        "line_total": 277.5,
+        "extraction_confidence": 0.9
+      }
+    ],
+    "subtotal": 7977.5,
+    "vat": 1595.5,
+    "total": 9573.0
+  },
+  "matched_po": {
+    "po_number": "PO-2024-001",
+    "supplier": "PharmaChem Supplies Ltd",
+    "date": "2024-01-10",
+    "total": 9573.0,
+    "currency": "GBP",
+    "line_items": [
+      {
+        "item_id": "API-001",
+        "description": "Paracetamol BP 500mg",
+        "quantity": 50,
+        "unit": "kg",
+        "unit_price": 125.0,
+        "line_total": 6250.0
+      },
+      {
+        "item_id": "EXC-023",
+        "description": "Microcrystalline Cellulose",
+        "quantity": 100,
+        "unit": "kg",
+        "unit_price": 8.5,
+        "line_total": 850.0
+      },
+      {
+        "item_id": "EXC-045",
+        "description": "Magnesium Stearate Ph Eur",
+        "quantity": 25,
+        "unit": "kg",
+        "unit_price": 24.0,
+        "line_total": 600.0
+      },
+      {
+        "item_id": "COL-012",
+        "description": "Titanium Dioxide E171",
+        "quantity": 15,
+        "unit": "kg",
+        "unit_price": 18.5,
+        "line_total": 277.5
+      }
+    ]
+  },
+  "discrepancies": [],
+  "extraction_confidence": 0.9,
+  "po_match_confidence": 1.0,
+  "recommended_action": "auto_approve",
+  "agent_reasoning": "Parsed invoice fields and line items from PDF contents | PO matched; validation passed"
+}
+
+=== Processing Invoice_2_Scanned.pdf ===
+
+{
+  "filename": "C:\\Users\\rohit reddy\\Downloads\\New folder\\invoice-reconciliation-agent\\data\\invoices\\Invoice_2_Scanned.pdf",
+  "discrepancies": [
+    {
+      "type": "extraction_failed",
+      "severity": "high",
+      "details": "Page 1 needs OCR; install Tesseract and add it to PATH or set TESSERACT_CMD",
+      "invoice_total": null,
+      "po_total": null,
+      "variance_percentage": null
+    }
+  ],
+  "extraction_confidence": 0.0,
+  "po_match_confidence": 0.0,
+  "recommended_action": "flag_for_review",
+  "agent_reasoning": "PDF extraction failed; manual review required | Manual review required; inspect discrepancies"
+}
+
+=== Processing Invoice_3_Different_Format.pdf ===
+
+{
+  "filename": "C:\\Users\\rohit reddy\\Downloads\\New folder\\invoice-reconciliation-agent\\data\\invoices\\Invoice_3_Different_Format.pdf",
+  "extracted_invoice": {
+    "invoice_number": "MC-INV-3421",
+    "invoice_date": "22/01/2024",
+    "supplier": "MEDCHEM INGREDIENTS",
+    "po_reference": "PO-2024-003",
+    "currency": "GBP",
+    "line_items": [
+      {
+        "description": "Pregelatinized Starch",
+        "quantity": 200.0,
+        "unit": "kg",
+        "unit_price": 6.75,
+        "line_total": 1350.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Gelatin Type A 200 Bloom",
+        "quantity": 50.0,
+        "unit": "kg",
+        "unit_price": 45.0,
+        "line_total": 2250.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Lactose Monohydrate Mesh 200",
+        "quantity": 150.0,
+        "unit": "kg",
+        "unit_price": 11.2,
+        "line_total": 1680.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Croscarmellose Sodium",
+        "quantity": 30.0,
+        "unit": "kg",
+        "unit_price": 28.5,
+        "line_total": 855.0,
+        "extraction_confidence": 0.9
+      }
+    ],
+    "subtotal": 6135.0,
+    "vat": 1227.0,
+    "total": 7362.0
+  },
+  "matched_po": {
+    "po_number": "PO-2024-003",
+    "supplier": "MedChem Ingredients",
+    "date": "2024-01-15",
+    "total": 7362.0,
+    "currency": "GBP",
+    "line_items": [
+      {
+        "item_id": "MC-215",
+        "description": "Gelatin Type A 200 Bloom",
+        "quantity": 50,
+        "unit": "kg",
+        "unit_price": 45.0,
+        "line_total": 2250.0
+      },
+      {
+        "item_id": "MC-376",
+        "description": "Lactose Monohydrate Mesh 200",
+        "quantity": 150,
+        "unit": "kg",
+        "unit_price": 11.2,
+        "line_total": 1680.0
+      },
+      {
+        "item_id": "MC-584",
+        "description": "Pregelatinized Starch",
+        "quantity": 200,
+        "unit": "kg",
+        "unit_price": 6.75,
+        "line_total": 1350.0
+      },
+      {
+        "item_id": "MC-492",
+        "description": "Croscarmellose Sodium",
+        "quantity": 30,
+        "unit": "kg",
+        "unit_price": 28.5,
+        "line_total": 855.0
+      }
+    ]
+  },
+  "discrepancies": [],
+  "extraction_confidence": 0.9,
+  "po_match_confidence": 1.0,
+  "recommended_action": "auto_approve",
+  "agent_reasoning": "Parsed invoice fields and line items from PDF contents | PO matched; validation passed"
+}
+
+=== Processing Invoice_4_Price_Trap.pdf ===
+
+{
+  "filename": "C:\\Users\\rohit reddy\\Downloads\\New folder\\invoice-reconciliation-agent\\data\\invoices\\Invoice_4_Price_Trap.pdf",
+  "extracted_invoice": {
+    "invoice_number": "GPS-8842",
+    "invoice_date": "25/01/2024",
+    "supplier": "Global Pharma Supply Co.",
+    "po_reference": "PO-2024-004",
+    "currency": "GBP",
+    "line_items": [
+      {
+        "description": "Ibuprofen BP 200mg",
+        "quantity": 100.0,
+        "unit": "kg",
+        "unit_price": 88.0,
+        "line_total": 8800.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Povidone K30 USP",
+        "quantity": 75.0,
+        "unit": "kg",
+        "unit_price": 22.0,
+        "line_total": 1650.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Sodium Starch Glycolate",
+        "quantity": 40.0,
+        "unit": "kg",
+        "unit_price": 19.5,
+        "line_total": 780.0,
+        "extraction_confidence": 0.9
+      }
+    ],
+    "subtotal": 11230.0,
+    "vat": 2246.0,
+    "total": 13476.0
+  },
+  "matched_po": {
+    "po_number": "PO-2024-004",
+    "supplier": "Global Pharma Supply Co.",
+    "date": "2024-01-18",
+    "total": 13176.0,
+    "currency": "GBP",
+    "line_items": [
+      {
+        "item_id": "GPS-A101",
+        "description": "Ibuprofen BP 200mg",
+        "quantity": 100,
+        "unit": "kg",
+        "unit_price": 80.0,
+        "line_total": 8000.0
+      },
+      {
+        "item_id": "GPS-E045",
+        "description": "Povidone K30 USP",
+        "quantity": 75,
+        "unit": "kg",
+        "unit_price": 22.0,
+        "line_total": 1650.0
+      },
+      {
+        "item_id": "GPS-E067",
+        "description": "Sodium Starch Glycolate",
+        "quantity": 40,
+        "unit": "kg",
+        "unit_price": 19.5,
+        "line_total": 780.0
+      }
+    ]
+  },
+  "discrepancies": [
+    {
+      "type": "total_mismatch",
+      "severity": "high",
+      "details": "Invoice total 13476.0 differs from PO total 13176.0",
+      "invoice_total": 13476.0,
+      "po_total": null,
+      "variance_percentage": null
+    },
+    {
+      "type": "price_mismatch",
+      "severity": "high",
+      "details": "Ibuprofen BP 200mg: unit_price differs from PO",
+      "invoice_total": 13476.0,
+      "po_total": null,
+      "variance_percentage": null
+    },
+    {
+      "type": "price_mismatch",
+      "severity": "high",
+      "details": "Ibuprofen BP 200mg: line_total differs from PO",
+      "invoice_total": 13476.0,
+      "po_total": null,
+      "variance_percentage": null
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "po_match_confidence": 1.0,
+  "recommended_action": "flag_for_review",
+  "agent_reasoning": "Parsed invoice fields and line items from PDF contents | Manual review required; inspect discrepancies"
+}
+
+=== Processing Invoice_5_Missing_PO.pdf ===
+
+{
+  "filename": "C:\\Users\\rohit reddy\\Downloads\\New folder\\invoice-reconciliation-agent\\data\\invoices\\Invoice_5_Missing_PO.pdf",
+  "extracted_invoice": {
+    "invoice_number": "EC-7721",
+    "invoice_date": "28 Jan 2024",
+    "supplier": "EuroChem Trading Ltd",
+    "po_reference": null,
+    "currency": "GBP",
+    "line_items": [
+      {
+        "description": "Mannitol Granular USP",
+        "quantity": 120.0,
+        "unit": "kg",
+        "unit_price": 14.5,
+        "line_total": 1740.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Talc Pharma Grade",
+        "quantity": 60.0,
+        "unit": "kg",
+        "unit_price": 8.8,
+        "line_total": 528.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Colloidal Silicon Dioxide",
+        "quantity": 25.0,
+        "unit": "kg",
+        "unit_price": 35.0,
+        "line_total": 875.0,
+        "extraction_confidence": 0.9
+      },
+      {
+        "description": "Hypromellose 2910",
+        "quantity": 80.0,
+        "unit": "kg",
+        "unit_price": 18.75,
+        "line_total": 1500.0,
+        "extraction_confidence": 0.9
+      }
+    ],
+    "subtotal": 4643.0,
+    "vat": 928.6,
+    "total": 5571.6
+  },
+  "matched_po": {
+    "po_number": "PO-2024-005",
+    "supplier": "EuroChem Trading Ltd",
+    "date": "2024-01-22",
+    "total": 5571.6,
+    "currency": "GBP",
+    "line_items": [
+      {
+        "item_id": "EC-M-440",
+        "description": "Mannitol Granular USP",
+        "quantity": 120,
+        "unit": "kg",
+        "unit_price": 14.5,
+        "line_total": 1740.0
+      },
+      {
+        "item_id": "EC-T-892",
+        "description": "Talc Pharma Grade",
+        "quantity": 60,
+        "unit": "kg",
+        "unit_price": 8.8,
+        "line_total": 528.0
+      },
+      {
+        "item_id": "EC-S-225",
+        "description": "Colloidal Silicon Dioxide",
+        "quantity": 25,
+        "unit": "kg",
+        "unit_price": 35.0,
+        "line_total": 875.0
+      },
+      {
+        "item_id": "EC-H-667",
+        "description": "Hypromellose 2910",
+        "quantity": 80,
+        "unit": "kg",
+        "unit_price": 18.75,
+        "line_total": 1500.0
+      }
+    ]
+  },
+  "discrepancies": [
+    {
+      "type": "missing_po_reference",
+      "severity": "high",
+      "details": "Invoice has no explicit PO reference; candidate match requires review",
+      "invoice_total": 5571.6,
+      "po_total": null,
+      "variance_percentage": null
+    }
+  ],
+  "extraction_confidence": 0.9,
+  "po_match_confidence": 0.6,
+  "recommended_action": "flag_for_review",
+  "agent_reasoning": "Parsed invoice fields and line items from PDF contents | Manual review required; inspect discrepancies"
+}

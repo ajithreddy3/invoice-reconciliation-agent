@@ -1,38 +1,18 @@
-from utils.po_loader import load_purchase_orders
+﻿from utils.po_loader import load_purchase_orders
+
 
 def matching_agent(state):
     invoice = state.extracted_invoice
-    purchase_orders = load_purchase_orders()
-
-    # Safety check
-    if not invoice or not purchase_orders:
+    if not invoice or state.extraction_confidence < 0.85:
         return state
-
-    for po in purchase_orders:
-        # Defensive: ensure po is dict
-        if not isinstance(po, dict):
-            continue
-
-        # 1️⃣ STRONG MATCH — total amount
-        if "total" in po and abs(po["total"] - invoice.total) < 1e-2:
-            state.matched_po = po
-            state.po_match_confidence = 1.0
-            return state
-
-        # 2️⃣ FALLBACK — line-item overlap
-        po_items = po.get("line_items", [])
-        if not po_items:
-            continue
-
-        matches = 0
-        for inv_item in invoice.line_items:
-            for po_item in po_items:
-                if inv_item.description.lower() in po_item["description"].lower():
-                    matches += 1
-
-        if matches >= max(1, len(invoice.line_items) * 0.5):
-            state.matched_po = po
-            state.po_match_confidence = 0.6
-            return state
-
+    orders = load_purchase_orders()
+    if invoice.po_reference:
+        candidates = [po for po in orders if po.get('po_number') == invoice.po_reference]
+    else:
+        candidates = [po for po in orders if abs(po['total'] - invoice.total) < 0.02
+                      and po.get('currency') == invoice.currency
+                      and po.get('supplier', '').casefold() == invoice.supplier.casefold()]
+    if len(candidates) == 1:
+        state.matched_po = candidates[0]
+        state.po_match_confidence = 1.0 if invoice.po_reference else 0.6
     return state
