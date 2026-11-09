@@ -130,12 +130,8 @@ GitHub: [ajithreddy3](https://github.com/ajithreddy3)
 
 Email: [ajithparne@gmail.com](mailto:ajithparne@gmail.com)
 
-Responsible for this version's content-based PDF extraction, reconciliation validation, CLI improvements, regression tests, sample execution, and documentation, with Codex assistance.
-
-## Upstream source
-
-This version builds on an [upstream repository](https://github.com/RitvikSharmaa/invoice-reconciliation-agent), imported at revision `5f3f622a684fe177a52ee109a5448b64ea7aa78f`. Ajith Reddy's contributions to this version are described in the Author section above.
+Implemented content-based PDF extraction, reconciliation validation, CLI improvements, regression tests, sample execution, and documentation.
 
 ## License status
 
-The upstream README claimed MIT licensing, but the imported revision contains no LICENSE file. The licensing grant remains unverified.
+No LICENSE file is included. A redistribution license has not been established.
