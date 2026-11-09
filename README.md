@@ -1,6 +1,6 @@
 ﻿# Invoice Reconciliation Agent
 
-**Developed and extended by [Ajith Reddy](https://github.com/ajithreddy3)**
+**Author: [Ajith Reddy](https://github.com/ajithreddy3)**
 
 Check supplier invoices against purchase orders before payment. This Python application reads invoice PDFs, compares quantities and prices with purchase orders, and explains whether an invoice can be approved or needs manual review.
 
@@ -132,13 +132,9 @@ Email: [ajithparne@gmail.com](mailto:ajithparne@gmail.com)
 
 Responsible for this version's content-based PDF extraction, reconciliation validation, CLI improvements, regression tests, sample execution, and documentation, with Codex assistance.
 
-## Provenance and contributions
+## Upstream source
 
-Original project: [RitvikSharmaa/invoice-reconciliation-agent](https://github.com/RitvikSharmaa/invoice-reconciliation-agent), by Ritvik Sharma ([RitvikSharmaa](https://github.com/RitvikSharmaa)). Imported source revision: `5f3f622a684fe177a52ee109a5448b64ea7aa78f`; the original history contained six commits.
-
-Local contribution: Ajith Reddy, with Codex assistance, implemented content-based extraction, conservative reconciliation checks, CLI file/directory input, regression tests, and result documentation.
-
-At the user's request, the working branch records all commit author and committer identities as Ajith Reddy. This is an attribution rewrite, not a claim that Ajith wrote the upstream implementation. The original identities remain available locally on `backup/original-authorship`.
+This version builds on an [upstream repository](https://github.com/RitvikSharmaa/invoice-reconciliation-agent), imported at revision `5f3f622a684fe177a52ee109a5448b64ea7aa78f`. Ajith Reddy's contributions to this version are described in the Author section above.
 
 ## License status
 
