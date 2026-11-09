@@ -1,18 +1,32 @@
 ﻿# Invoice Reconciliation Agent
 
-A Python CLI that reads invoice PDF contents, extracts structured fields and line items, matches purchase orders, checks discrepancies, and recommends approval or manual review through a four-stage LangGraph workflow.
+**Developed and extended by [Ajith Reddy](https://github.com/ajithreddy3)**
+
+Check supplier invoices against purchase orders before payment. This Python application reads invoice PDFs, compares quantities and prices with purchase orders, and explains whether an invoice can be approved or needs manual review.
+
+**Stack:** Python, LangGraph, Pydantic, pdfplumber, PDFium, optional Tesseract OCR.
+
+**Verified locally:** 5 sample invoices processed, 2 recommended approvals, 3 flagged for review, and all 8 regression tests passed. Scanned-document recognition requires a separate Tesseract installation and has not been validated locally.
+
+## Use case
+
+Accounts-payable and procurement teams need to confirm that suppliers billed the agreed amounts. If a purchase order specifies 100 kg at GBP 80/kg but the invoice charges GBP 88/kg, this application flags the price difference rather than recommending approval.
+
+Each result includes extracted invoice data, a matched purchase order when available, discrepancies, and a recommendation. This CLI prototype supports invoice review; it does not execute payments or integrate with an accounting system.
 
 ```text
 PDF contents -> Document -> Matching -> Discrepancy -> Resolution
 ```
 
-Extraction is content-based: renaming a PDF does not change its extracted values. The parser supports English invoices with text rows containing description, quantity, unit, unit price, and line total. Other layouts require parser extensions and are flagged when completeness checks fail.
+Invoice values come from the PDF contents, not its filename. The current parser supports English invoice rows containing description, quantity, unit, unit price, and line total. See the extraction limitations below for layouts that require extensions.
 
 ## Run locally
 
-Validated on Windows with Python 3.10.11. From the repository root in PowerShell:
+Validated on Windows with Python 3.10.11. In PowerShell:
 
 ```powershell
+git clone https://github.com/ajithreddy3/invoice-reconciliation-agent.git
+cd invoice-reconciliation-agent
 python -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
 # Process bundled samples
@@ -112,7 +126,9 @@ Legacy `utils/ocr.py` and `utils/llm.py` are not used by the active pipeline.
 
 **Ajith Reddy**
 
-Git author email: `ajithparne@gmail.com`
+GitHub: [ajithreddy3](https://github.com/ajithreddy3)
+
+Email: [ajithparne@gmail.com](mailto:ajithparne@gmail.com)
 
 Responsible for this version's content-based PDF extraction, reconciliation validation, CLI improvements, regression tests, sample execution, and documentation, with Codex assistance.
 
